@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "826440771512",
+    "project_id": "kitsuone-86f23",
+    "storage_bucket": "kitsuone-86f23.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826440771512:android:9757f0124d631afc0e514d",
+        "android_client_info": {
+          "package_name": "com.example.kitsuone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnZNuTqx70Ys55d9DpJW_WPcUgT6AI4_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
