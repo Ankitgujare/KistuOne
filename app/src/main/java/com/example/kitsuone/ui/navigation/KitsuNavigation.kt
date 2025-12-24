@@ -152,6 +152,9 @@ fun KitsuApp(
                     },
                     onBrowseClick = { type, query ->
                         navController.navigate("anime_list/$type/$query")
+                    },
+                    onNavigateToRoute = { route ->
+                        navController.navigate(route)
                     }
                 )
             }

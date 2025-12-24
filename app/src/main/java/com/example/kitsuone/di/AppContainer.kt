@@ -29,7 +29,7 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
     // Local network IP - Make sure the aniwatch-api server is running!
     // Start server: Run `npm start` in aniwatch-api folder
     // NOTE: Server runs on port 4000. This only works on WiFi. For mobile data, use ngrok or deploy to cloud
-    private val baseUrl = "http://192.168.1.6:3030/"
+    private val baseUrl = "http://10.96.215.36:3030/"
 
     private val json = Json { ignoreUnknownKeys = true }
 

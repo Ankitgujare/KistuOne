@@ -1,62 +1,75 @@
-# 🦊 KitsuOne: The Ultimate Anime Experience
+# KitsuOne 🦊
 
-![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white) ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=android&logoColor=white) ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white) ![Status](https://img.shields.io/badge/Status-Active%20Dev-orange?style=for-the-badge)
+**KitsuOne** is a modern, native Android application for streaming anime, tracking watchlists, and discovering new series. Built with the latest Android technologies, it offers a seamless and immersive experience for anime enthusiasts.
 
-**Experience anime like never before.** KitsuOne is a cutting-edge, native Android streaming application crafted with **Jetpack Compose** and **Kotlin**. It redefines mobile anime watching with a sleek, cinema-grade interface and powerful performance.
+## 🚀 Features
 
-> 🚧 **Project Status**: Currently under active development. Join us on the journey to build the perfect anime app!
+- **Immersive User Interface**: A sleek, dark-themed UI built entirely with **Jetpack Compose** for smooth animations and responsive design.
+- **Anime Discovery**: Browse trending, top airing, upcoming, and most popular anime.
+- **Streaming**: Watch episodes directly within the app using **ExoPlayer** (Media3) with support for:
+  - HLS Streaming
+  - Multi-language Audio (Dub/Sub)
+  - Subtitles/Captions
+- **Search & Filter**: Powerful search functionality with filters for genres, seasons, and formats.
+- **Watchlist**: Keep track of what you're watching (or plan to watch) locally using **Room Database**.
+- **Schedule**: View airing schedules for the week.
+- **Authentication**: Secure login and signup powered by **Firebase Auth**.
+- **Data Source**: Powered by a custom `hianime-API` for fetching anime data.
 
----
+## 🛠️ Tech Stack & Architecture
 
-## 🔥 Why KitsuOne?
+KitsuOne follows modern Android development best practices:
 
-*   **🎬 Cinema in Your Pocket**: A fully custom-built video player with intuitive gesture controls (double-tap seek) and auto-subtitle support.
-*   **🎨 Stunning Design**: A premium, immersive dark-themed UI that puts the artwork front and center. Built 100% with Material 3.
-*   **🚀 Blazing Fast**: Powered by modern Android architecture (MVVM + Coroutines) for silky smooth navigation and zero lag.
-*   **📅 Stay Updated**: Integrated release schedule so you never miss a new episode of your favorite airing shows.
-*   **🔍 Power Search**: Find exactly what you want instantly with our smart search engine, featuring dynamic filters and debouncing.
+- **Language**: Kotlin
+- **UI Framework**: [Jetpack Compose](https://developer.android.com/jetpack/compose) (Material 3)
+- **Architecture**: MVVM (Model-View-ViewModel) + Repository Pattern
+- **Dependency Injection**: [Hilt](https://dagger.dev/hilt/)
+- **Networking**: [Retrofit 2](https://square.github.io/retrofit/) with Kotlinx Serialization
+- **Image Loading**: [Coil](https://coil-kt.github.io/coil/)
+- **Local Database**: [Room](https://developer.android.com/training/data-storage/room)
+- **Video Player**: [Media3 (ExoPlayer)](https://developer.android.com/media/media3)
+- **Async Processing**: Kotlin Coroutines & Flow
 
-## ✨ Key Features
+### Architecture Overview
 
--   **Seamless Streaming**: High-quality playback with multiple server options.
--   **Smart Library**: Track your watching progress and manage your watchlist locally.
--   **Deep Dive Details**: Full cast & crew info, voice actors, and relation graphs for every show.
--   **No Distractions**: Pure, ad-free viewing experience designed for fans, by fans.
-
-## 🛠️ Built With Modern Tech
-
-*   **Language**: Kotlin 100%
-*   **UI**: Jetpack Compose (Material Design 3)
-*   **Architecture**: MVVM (Clean Architecture principles)
-*   **Network**: Retrofit + OkHttp
-*   **Media**: AndroidX Media3 (ExoPlayer)
-*   **DI**: Hilt / Manual DI pattern
-*   **Async**: Coroutines & Flows
-
-## 🚀 Getting Started
-
-### 1. Backend Setup (Hianime API)
-KitsuOne uses a powerful Node.js backend.
-```bash
-cd hianime-API
-npm install
-npm start
-# Server runs on port 3030 🟢
+```mermaid
+graph TD
+    UI[UI Layer (Screens & Composables)] --> VM[ViewModel]
+    VM --> Rep[Repository]
+    Rep --> Remote[Remote Data Source (Retrofit)]
+    Rep --> Local[Local Data Source (Room)]
+    Remote --> API[HiAnime API]
+    Local --> DB[Device Database]
 ```
 
-### 2. Android Setup
-1.  Clone this repository.
-2.  Open in **Android Studio**.
-3.  **Config**: Update `AppContainer.kt` with your local IP to connect to the backend (e.g., `http://192.168.1.X:3030/`).
-4.  **Run**: Hit play and enjoy!
+## 📂 Project Structure
+
+- `ui/`: Contains all Compose screens (`home`, `details`, `player`, `search`, etc.) and UI components.
+- `data/`: Repositories, API interfaces, and Data Models.
+- `di/`: Hilt Dependency Injection modules.
+- `model/`: Data classes representing Anime entities.
 
 ## 🤝 Contribution
 
-We welcome contributions! Whether it's fixing bugs, adding new features, or improving documentation, feel free to open a Pull Request.
+We welcome contributions from the community! Whether it's fixing bugs, adding new features, or improving documentation, your help is appreciated.
+
+### How to Contribute
+
+1.  **Fork** the repository.
+2.  Create a new branch for your feature or fix: `git checkout -b feature/amazing-feature`.
+3.  **Commit** your changes: `git commit -m 'Add some amazing feature'`.
+4.  **Push** to the branch: `git push origin feature/amazing-feature`.
+5.  Open a **Pull Request**.
+
+### Guidelines
+
+- Follow the existing code style (Kotlin coding conventions).
+- Ensure your code builds without errors.
+- If adding a new feature, please describe it clearly in your PR.
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+[Add License Here, e.g., MIT, Apache 2.0]
 
 ---
-*Made with ❤️ for the Anime Community*
+*Your Anime Journey Begins with KitsuOne.*
