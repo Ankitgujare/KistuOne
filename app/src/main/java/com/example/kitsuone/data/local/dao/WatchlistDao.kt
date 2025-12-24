@@ -42,4 +42,7 @@ interface WatchlistDao {
     
     @Query("SELECT COUNT(*) FROM watchlist WHERE status = :status")
     suspend fun getCountByStatus(status: String): Int
+
+    @Query("SELECT title FROM watchlist WHERE status IN (:statuses) ORDER BY lastUpdated DESC LIMIT 20")
+    suspend fun getWatchedTitlesSync(statuses: List<String>): List<String>
 }

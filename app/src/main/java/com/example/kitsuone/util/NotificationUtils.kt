@@ -27,21 +27,37 @@ object NotificationUtils {
         }
     }
 
-    fun showAnimeSuggestion(context: Context, animeTitle: String) {
-        // Ensure permission is granted before calling this
+    fun showNotification(context: Context, title: String, message: String) {
+        val intent = android.content.Intent(context, com.example.kitsuone.MainActivity::class.java).apply {
+            flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent = android.app.PendingIntent.getActivity(
+            context, 0, intent, android.app.PendingIntent.FLAG_IMMUTABLE
+        )
+
         try {
             val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher) // or a specific notification icon
-                .setContentTitle("Suggested Anime")
-                .setContentText("You should watch: $animeTitle")
+                .setSmallIcon(R.mipmap.ic_launcher) // Consider using R.drawable.logo if available and suitable
+                .setContentTitle(title)
+                .setContentText(message)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(message))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
 
             with(NotificationManagerCompat.from(context)) {
-                notify(NOTIFICATION_ID, builder.build())
+                notify(Random.nextInt(), builder.build()) // Use random ID to allow multiple notifications
             }
         } catch (e: SecurityException) {
             // Log or handle missing permission
         }
+    }
+
+    fun showAnimeSuggestion(context: Context, animeTitle: String) {
+        showNotification(
+            context,
+            "Anime Suggestion",
+            "How about watching $animeTitle today?"
+        )
     }
 }

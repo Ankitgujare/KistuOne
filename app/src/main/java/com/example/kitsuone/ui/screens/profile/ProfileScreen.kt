@@ -177,14 +177,6 @@ fun ProfileScreen(
                 }
             )
         }
-        
-        item {
-            SettingsItem(
-                icon = if (isDarkTheme) Icons.Default.Settings else Icons.Default.Person,
-                title = if (isDarkTheme) "Dark Mode" else "Light Mode",
-                onClick = { themeViewModel.toggleTheme() }
-            )
-        }
 
         item {
             SettingsItem(

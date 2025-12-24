@@ -1,25 +1,18 @@
 package com.example.kitsuone.ui.screens.splash
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kitsuone.R
@@ -29,197 +22,94 @@ import kotlinx.coroutines.delay
 fun SplashScreen(
     onNavigateToHome: () -> Unit
 ) {
-    // Auto-navigate after 3 seconds
+    // Auto-navigate after 2.5 seconds (slightly faster for minimal feel)
     LaunchedEffect(Unit) {
-        delay(3000)
+        delay(2500)
         onNavigateToHome()
     }
 
-    // Animation states
-    val infiniteTransition = rememberInfiniteTransition(label = "splash_animations")
-    
-    // Shimmer/glow effect
-    val shimmerAlpha by infiniteTransition.animateFloat(
-        initialValue = 0.3f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "shimmer"
-    )
-    
-    // Particle floating animation
-    val particleOffset by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(3000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ),
-        label = "particles"
-    )
+    // Single unified animation controller
+    val transitionState = remember { MutableTransitionState(false) }
+    transitionState.targetState = true
 
-    // Title entrance animation
-    val titleScale by animateFloatAsState(
-        targetValue = 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        ),
-        label = "title_scale"
-    )
+    val transition = updateTransition(transitionState, label = "splashTransition")
+
+    // Logo Scale Animation
+    val logoScale by transition.animateFloat(
+        transitionSpec = {
+            tween(durationMillis = 1000, easing = FastOutSlowInEasing)
+        },
+        label = "logoScale"
+    ) { state ->
+        if (state) 1f else 0.8f
+    }
+
+    // Logo Alpha Animation
+    val logoAlpha by transition.animateFloat(
+        transitionSpec = {
+            tween(durationMillis = 800)
+        },
+        label = "logoAlpha"
+    ) { state ->
+        if (state) 1f else 0f
+    }
+
+    // Text Slide/Fade Animation
+    val textAlpha by transition.animateFloat(
+        transitionSpec = {
+            tween(durationMillis = 800, delayMillis = 300)
+        },
+        label = "textAlpha"
+    ) { state ->
+        if (state) 1f else 0f
+    }
     
-    val titleAlpha by animateFloatAsState(
-        targetValue = 1f,
-        animationSpec = tween(1000, easing = FastOutSlowInEasing),
-        label = "title_alpha"
-    )
+    val textOffset by transition.animateDp(
+        transitionSpec = {
+             tween(durationMillis = 1000, delayMillis = 300, easing = FastOutSlowInEasing)
+        },
+        label = "textOffset"
+    ) { state ->
+        if (state) 0.dp else 20.dp
+    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF1a0a2e), // Deep purple
-                        Color(0xFF2d1b4e), // Purple
-                        Color(0xFF4a1f6f), // Medium purple
-                        Color(0xFF6b2d8a), // Lighter purple
-                        Color(0xFF8b3a9c)  // Pink-purple
-                    )
-                )
-            ),
+            .background(Color(0xFF050505)), // Deep minimal dark
         contentAlignment = Alignment.Center
     ) {
-        // Floating particles background
-        FloatingParticles(particleOffset)
-        
-        // Main content
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.weight(1f))
-            
-            // App logo/icon with glow effect
+            // Logo
             Box(
                 modifier = Modifier
-                    .size(120.dp)
-                    .scale(titleScale)
-                    .alpha(titleAlpha)
-                    .drawBehind {
-                        // Glow effect
-                        val glowColor = Color(0xFFFF6EC7).copy(alpha = shimmerAlpha * 0.5f)
-                        drawCircle(
-                            color = glowColor,
-                            radius = size.minDimension / 1.5f
-                        )
-                    }
+                    .size(140.dp) // Slightly larger
+                    .scale(logoScale)
+                    .alpha(logoAlpha)
             ) {
-                // Logo placeholder with gradient circle
                 Image(
                     painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "App Logo",
-                    contentScale = androidx.compose.ui.layout.ContentScale.Fit,
+                    contentDescription = "KitsuOne Logo",
                     modifier = Modifier.fillMaxSize()
                 )
             }
-            
-            Spacer(modifier = Modifier.height(32.dp))
-            
-            // App name with shimmer effect
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // App Name
             Text(
                 text = "KitsuOne",
-                fontSize = 56.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
                 color = Color.White,
-                style = androidx.compose.ui.text.TextStyle(
-                    shadow = Shadow(
-                        color = Color(0xFFFF6EC7).copy(alpha = shimmerAlpha),
-                        offset = Offset(0f, 0f),
-                        blurRadius = 20f
-                    )
-                ),
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.sp,
                 modifier = Modifier
-                    .scale(titleScale)
-                    .alpha(titleAlpha)
-            )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            // Subtitle
-            Text(
-                text = "Your Anime Journey Begins",
-                fontSize = 16.sp,
-                color = Color.White.copy(alpha = 0.7f * titleAlpha),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.alpha(titleAlpha)
-            )
-            
-            Spacer(modifier = Modifier.weight(1.5f))
-            
-            // Loading indicator
-            LoadingDots(shimmerAlpha)
-            
-            Spacer(modifier = Modifier.height(48.dp))
-        }
-    }
-}
-
-@Composable
-private fun FloatingParticles(animationProgress: Float) {
-    val particles = remember {
-        List(20) {
-            Particle(
-                x = (0..100).random().toFloat(),
-                y = (0..100).random().toFloat(),
-                size = (2..8).random().toFloat(),
-                speed = (30..80).random() / 100f
-            )
-        }
-    }
-    
-    Canvas(modifier = Modifier.fillMaxSize()) {
-        particles.forEach { particle ->
-            val progress = (animationProgress * particle.speed) % 1f
-            val x = size.width * (particle.x / 100f)
-            val y = size.height * (1f - progress)
-            
-            drawCircle(
-                color = Color.White.copy(alpha = 0.3f),
-                radius = particle.size,
-                center = Offset(x, y)
+                    .alpha(textAlpha)
+                    .offset(y = textOffset)
             )
         }
     }
 }
-
-@Composable
-private fun LoadingDots(shimmerAlpha: Float) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(16.dp)
-    ) {
-        repeat(3) { index ->
-            Box(
-                modifier = Modifier
-                    .size(10.dp)
-                    .alpha(shimmerAlpha)
-                    .background(
-                        color = Color(0xFFFF6EC7),
-                        shape = CircleShape
-                    )
-            )
-        }
-    }
-}
-
-private data class Particle(
-    val x: Float,
-    val y: Float,
-    val size: Float,
-    val speed: Float
-)

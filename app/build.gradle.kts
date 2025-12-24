@@ -47,6 +47,7 @@ android {
 dependencies {
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.work.runtime.ktx)
     kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.navigation.compose)
 
@@ -77,6 +78,12 @@ dependencies {
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.ui)
     implementation(libs.androidx.media3.hls)
+
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    
+    // Google AI SDK for Android (Gemini)
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 
     // Room Database
     implementation(libs.androidx.room.runtime)

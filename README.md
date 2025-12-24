@@ -14,7 +14,10 @@
 - **Watchlist**: Keep track of what you're watching (or plan to watch) locally using **Room Database**.
 - **Schedule**: View airing schedules for the week.
 - **Authentication**: Secure login and signup powered by **Firebase Auth**.
-- **Data Source**: Powered by a custom `hianime-API` for fetching anime data.
+- **AI Recommendations**: Smart, personalized anime recommendations powered by **Google Gemini AI**, analyzing your watch history to suggest your next favorite series.
+- **Smart Notifications**: Integrated notification system to suggest anime periodically and on-demand through the Profile settings.
+- **Background Processing**: Periodically updates recommendations in the background using **WorkManager**.
+- **Data Source**: Powered by a custom `hianime-API` for fetching high-quality anime data and streaming links.
 
 ## 🛠️ Tech Stack & Architecture
 
@@ -41,6 +44,24 @@ graph TD
     Remote --> API[HiAnime API]
     Local --> DB[Device Database]
 ```
+
+## 🚀 Getting Started
+
+To get the project running locally, follow these steps:
+
+### 1. Start the API Server
+The app relies on the `hianime-API` for data.
+1. Navigate to the `hianime-API` directory.
+2. Run `.\start-server.bat` (on Windows) or `npm start`.
+3. The server will run at `http://localhost:3030`.
+
+### 2. Configure Gemini AI (Optional)
+To enable AI-powered recommendations:
+1. Open `f:\KitsuOne\app\src\main\java\com\example\kitsuone\worker\RecommendationWorker.kt`.
+2. Replace the `validApiKey` placeholder with your **Google Gemini API Key**.
+
+### 3. Build & Run
+Open the project in **Android Studio** and run the `:app` module on an emulator or physical device.
 
 ## 📂 Project Structure
 
