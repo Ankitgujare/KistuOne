@@ -94,3 +94,6 @@ We welcome contributions from the community! Whether it's fixing bugs, adding ne
 
 ---
 *Your Anime Journey Begins with KitsuOne.*
+
+![Image Alt](https://github.com/Ankitgujare/KistuOne/blob/b88a59279ab0ce784129afb02c8c2ab39023af8f/One%20(1).png)
+![Image Alt](https://github.com/Ankitgujare/KistuOne/blob/b88a59279ab0ce784129afb02c8c2ab39023af8f/two.png)
